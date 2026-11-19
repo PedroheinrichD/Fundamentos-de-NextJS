@@ -2,7 +2,7 @@
 
 type Props = {
     params: {
-        postId: number
+        postId: string
     }
 }
 
@@ -13,13 +13,23 @@ type PostType = {
     body: number
 }
 
-export default async function page({ params }: Props) {
+export const generateMetadata = async ({ params }: Props) => {
     const { postId } = await params
 
     const postRequest = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
     const post:PostType = await postRequest.json()
 
 
+    return {
+        title: post.title
+    }
+}
+
+export default async function page({ params }: Props) {
+    const { postId } = await params
+
+    const postRequest = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+    const post:PostType = await postRequest.json()
 
     return(
         <div className="flex items-center justify-center flex-col">
